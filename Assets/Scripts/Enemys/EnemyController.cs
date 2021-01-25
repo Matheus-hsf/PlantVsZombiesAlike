@@ -35,6 +35,8 @@ public class EnemyController : MonoBehaviour
 
     private static EnemyController enemyControllerInstance; 
 
+    private static bool applicationQuiting = false;
+
     public GameObject uiWin;
 
 
@@ -76,6 +78,11 @@ public class EnemyController : MonoBehaviour
     }
 
     public static EnemyController GetEnemyControllerInstance(){
+        
+        if(applicationQuiting){
+            return null;
+        }
+       
         if(enemyControllerInstance == null){
             enemyControllerInstance = GameObject.FindObjectOfType<EnemyController>();
 
@@ -105,6 +112,14 @@ public class EnemyController : MonoBehaviour
             x += i * plusEnemysPerWave;
         }
         return x;
+    }
+
+    private void OnDestroy() {
+        applicationQuiting = true;
+    }
+
+    private void OnEnable() {
+        applicationQuiting = false;
     }
   
 
